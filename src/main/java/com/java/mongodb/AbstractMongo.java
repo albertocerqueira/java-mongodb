@@ -29,13 +29,13 @@ public class AbstractMongo {
 	}
 
 	protected synchronized void initClientIfNecessary() {
-		System.out.println("Mongo Client precisa ser inicializado? [" + isDisconnected() + "]");
+		System.out.println("Mongo Client precisa ser inicializado? [" + isDisconnected() + "].");
 		if (isDisconnected()) {
-			System.out.println("Mongo Client sendo iniciado [mongodb://127.0.0.1:27017/albertocerqueira]");
+			System.out.println("Mongo Client sendo iniciado [mongodb://127.0.0.1:27017/albertocerqueira].");
 			MongoClientURI mongoClientURI = new MongoClientURI("mongodb://127.0.0.1:27017/wayhub");
 			// Arrays.asList(new ServerAddress("localhost", 27017))
 			mongoClient = new MongoClient(mongoClientURI);
-			System.out.println("Mongo Client iniciado");
+			System.out.println("Mongo Client iniciado.");
 		}
 	}
 

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class JSONEngine {
 
 	private ObjectMapper om = null;
-	public static JSONEngine jsonEngine = new JSONEngine();
+	public static JSONEngine instance = new JSONEngine();
 
 	private JSONEngine() {
 		om = new ObjectMapper();
@@ -24,7 +24,7 @@ public class JSONEngine {
 	}
 
 	public static JSONEngine getInstance() {
-		return jsonEngine;
+		return instance;
 	}
 
 	public JSON toJSON(Object o) throws Exception {
