@@ -87,6 +87,25 @@ public class ClienteRepository extends AbstractMongo {
 	}
 	
 	/**
+	 * 
+	 * @query db.cliente.find({"idade": <"value">})
+	 * 
+	 * @param idade
+	 * @return
+	 * @throws Exception
+	 */
+	public Cliente buscarPelaIdade(Integer idade) throws Exception {
+		MongoDatabase db = getDBClient().getDatabase(DATABASE_NAME);
+		MongoCollection<Document> collection = db.getCollection(BUCKET_NAME_CLIENTE);
+		FindIterable<Document> documents = collection.find(Filters.and(Filters.eq("idade", idade)));
+		Document obj = documents.first();
+		if (obj != null) {
+			return Cliente.create(JSON.createFrom(String.valueOf(obj.toJson())));
+		}
+		return null;
+	}
+	
+	/**
 	 * @query db.cliente.find({"idade": { $in: [<"value">, <"value">] }})
 	 * 
 	 * @param idades

@@ -39,11 +39,11 @@ public class AbstractMongo {
 		}
 	}
 
-	public Long currVal(String sequenceName) {
+	public Long currVal(String sequencia) {
 		MongoDatabase db = getDBClient().getDatabase(DATABASE_NAME);
-		MongoCollection<Document> collection = db.getCollection("counters");
+		MongoCollection<Document> collection = db.getCollection("contadores");
 		BasicDBObject find = new BasicDBObject();
-		find.put("_id", sequenceName);
+		find.put("_id", sequencia);
 		FindIterable<Document> documentosEncontrado = collection.find(find);
 		Long currVal = Long.valueOf(0);
 		if (documentosEncontrado.iterator().hasNext()) {
@@ -53,17 +53,17 @@ public class AbstractMongo {
 		return currVal;
 	}
 
-	public Long nextVal(String sequenceName) {
+	public Long nextVal(String sequencia) {
 		MongoDatabase db = getDBClient().getDatabase(DATABASE_NAME);
-		MongoCollection<Document> collection = db.getCollection("counters");
+		MongoCollection<Document> collection = db.getCollection("contadores");
 		BasicDBObject find = new BasicDBObject();
-		find.put("_id", sequenceName);
+		find.put("_id", sequencia);
 		BasicDBObject update = new BasicDBObject();
 		update.put("$inc", new BasicDBObject("seq", new BsonInt64(1)));
 		Document obj = collection.findOneAndUpdate(find, update);
 		Long seq = null;
 		if (obj == null) {
-			Document d = new Document().append("_id", sequenceName).append("seq", new BsonInt64(1));
+			Document d = new Document().append("_id", sequencia).append("seq", new BsonInt64(1));
 			collection.insertOne(d);
 			seq = Long.valueOf(1L);
 		} else {
@@ -139,15 +139,10 @@ public class AbstractMongo {
 		}
 		Document d = collection.findOneAndUpdate(filters, new Document("$inc", new Document(fieldToSet, value)));
 		if (d == null) {
-			// Estamos lancando um IllegalStateException pois espera-se que
-			// nesse momento
-			// ja exista o registro no banco para que seja feito o incremento,
-			// nesse caso
-			// quem esta em IllegalState eh o banco de dados.
-			// Nao estou colocando um ObjectNotFoundException pois a ideia de
-			// update eh diferente
-			// da ideia de busca
-			throw new IllegalStateException("O registro no bucketName [" + bucketName + "] nao foi encontrado!!!");
+			// Estamos lancando um IllegalStateException pois espera-se que nesse momento ja exista o registro no banco para que seja feito o incremento,
+			// nesse caso quem esta em IllegalState eh o banco de dados.
+			// Nao estou colocando um ObjectNotFoundException pois a ideia de update eh diferente da ideia de busca.
+			throw new IllegalStateException("O registro no bucketName [" + bucketName + "] n\u00e3o foi encontrado !!!");
 		}
 	}
 

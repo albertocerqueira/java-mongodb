@@ -49,7 +49,20 @@ public class TestCliente {
 	}
 	
 	@Test
-	public void test_3_buscarPorIdades() {
+	public void test_3_buscarPelaIdade() {
+		System.out.println("Executando m\u00e9todo de teste: buscarPorIdades()");
+		
+		try {
+			Cliente cliente = ClienteRepository.getInstance().buscarPelaIdade(26);
+			System.out.println(cliente.toJSON().dado());
+			Assert.assertEquals(cliente.nome(), nome);
+		} catch (Exception e) {
+			Assert.fail("Stack de erro [" + e.getMessage() + "].");
+		}
+	}
+	
+	@Test
+	public void test_4_buscarPorIdades() {
 		System.out.println("Executando m\u00e9todo de teste: buscarPorIdades()");
 		
 		try {
@@ -68,7 +81,7 @@ public class TestCliente {
 	}
 	
 	@Test
-	public void test_4_deletar() {
+	public void test_5_deletar() {
 		System.out.println("Executando m\u00e9todo de teste: deletar()");
 		
 		try {
@@ -79,7 +92,7 @@ public class TestCliente {
 	}
 	
 	@Test
-	public void test_5_buscarPeloNome() {
+	public void test_6_buscarPeloNome() {
 		System.out.println("Executando m\u00e9todo de teste: buscarPeloNome()");
 		
 		try {
