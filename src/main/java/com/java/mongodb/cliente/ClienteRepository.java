@@ -50,7 +50,7 @@ public class ClienteRepository extends AbstractMongo {
 		delete(key, BUCKET_NAME_CLIENTE);
 		System.out.println("Efetuado a remo\u00e7\u00e3o no Mongo do Cliente com a key [" + key + "].");
 	}
-
+	
 	public Cliente buscarPelaChave(String key) throws Exception {
 		Cliente cliente = null;
 		if (key != null) {
@@ -69,7 +69,7 @@ public class ClienteRepository extends AbstractMongo {
 
 	/**
 	 * 
-	 * @Query db.cliente.find({"nome": < value >})
+	 * @query db.cliente.find({"nome": <"value">})
 	 * 
 	 * @param nome
 	 * @return
@@ -86,11 +86,16 @@ public class ClienteRepository extends AbstractMongo {
 		return null;
 	}
 	
+	/**
+	 * @query db.cliente.find({"idade": { $in: [<"value">, <"value">] }})
+	 * 
+	 * @param idades
+	 * @return
+	 * @throws Exception
+	 */
 	public List<Cliente> buscarPorIdades(Integer ... idades) throws Exception {
 		MongoDatabase db = getDBClient().getDatabase(DATABASE_NAME);
 		MongoCollection<Document> collection = db.getCollection(BUCKET_NAME_CLIENTE);
-		
-		// db.cliente.find({"idade": { $in: [<value>, <value>] }}).pretty()
 		
 		List<Integer> list = new ArrayList<Integer>();
 		for (int i = 0, l = idades.length; i < l; i++) {
