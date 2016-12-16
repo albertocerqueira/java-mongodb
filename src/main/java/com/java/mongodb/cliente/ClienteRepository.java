@@ -23,24 +23,26 @@ public class ClienteRepository extends AbstractMongo {
 		return nextVal("cliente");
 	}
 
-	public void persist(Cliente cliente) throws Exception {
+	public void inserir(Cliente cliente) throws Exception {
 		String key = clienteNextVal() + "";
+		cliente.codigo(key);
 		cliente.data(Cliente.getCurrentISO8601Timestamp());
 		cliente.usuario("0123456789");
 		persist(key, cliente, BUCKET_NAME_CLIENTE);
-		System.out.println("Efetuado a grava\u00e7\u00e3o no Mongo do Produto com a key [" + key + "].");
+		System.out.println("Efetuado a grava\u00e7\u00e3o no Mongo do Cliente com a key [" + key + "].");
 	}
 
-	public void update(Cliente cliente) throws Exception {
+	public void alterar(Cliente cliente) throws Exception {
 		String key = cliente.codigo();
 		cliente.data(Cliente.getCurrentISO8601Timestamp());
 		cliente.usuario("0123456789");
 		update(key, cliente, BUCKET_NAME_CLIENTE);
-		System.out.println("Efetuado a altera\u00e7\u00e3o no Mongo do Produto com a key [" + key + "].");
+		System.out.println("Efetuado a altera\u00e7\u00e3o no Mongo do Cliente com a key [" + key + "].");
 	}
 
-	public void remove(String key) throws Exception {
-		// TODO: implementar
+	public void deletar(String key) throws Exception {
+		delete(key, BUCKET_NAME_CLIENTE);
+		System.out.println("Efetuado a remo\u00e7\u00e3o no Mongo do Cliente com a key [" + key + "].");
 	}
 
 	public Cliente buscarPelaChave(String key) throws Exception {
