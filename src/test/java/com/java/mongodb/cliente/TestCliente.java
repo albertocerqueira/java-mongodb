@@ -10,7 +10,7 @@ public class TestCliente {
 		
 	}
 	
-	@Test
+	// @Test
 	public void test_persist() {
 		Cliente cliente = new Cliente();
 		cliente.codigo("albertocerqueira");
@@ -20,6 +20,17 @@ public class TestCliente {
 		
 		try {
 			ClienteRepository.getInstance().persist(cliente);
+		} catch (Exception e) {
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void test_buscarPeloNome() {
+		try {
+			Cliente cliente = ClienteRepository.getInstance().buscarPeloNome("Alberto");
+			System.out.println(cliente.toJSON().dado());
+			Assert.assertEquals(cliente.nome(), "Alberto");
 		} catch (Exception e) {
 			Assert.fail();
 		}

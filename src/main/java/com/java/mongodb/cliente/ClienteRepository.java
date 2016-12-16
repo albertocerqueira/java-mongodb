@@ -1,8 +1,14 @@
 package com.java.mongodb.cliente;
 
+import org.bson.Document;
+
 import com.java.mongodb.AbstractMongo;
 import com.java.mongodb.ICallbackResult;
 import com.java.mongodb.JSON;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 public class ClienteRepository extends AbstractMongo {
 
@@ -53,8 +59,14 @@ public class ClienteRepository extends AbstractMongo {
 		return cliente;
 	}
 
-	public Cliente buscarPeloNome(String key) throws Exception {
-		// TODO: implementar
+	public Cliente buscarPeloNome(String nome) throws Exception {
+		MongoDatabase db = getDBClient().getDatabase(DATABASE_NAME);
+		MongoCollection<Document> collection = db.getCollection(BUCKET_NAME_CLIENTE);
+		FindIterable<Document> documents = collection.find(Filters.and(Filters.eq("nome", nome)));
+		Document obj = documents.first();
+		if (obj != null) {
+			return Cliente.create(JSON.createFrom(String.valueOf(obj.toJson())));
+		}
 		return null;
 	}
 }
