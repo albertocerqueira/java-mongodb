@@ -19,8 +19,7 @@ public class TestCliente {
 		cliente.idade(26);
 		
 		try {
-			IClienteRepository repository = ClienteRepositoryFactory.clienteRepository();
-			repository.persist(cliente);
+			ClienteRepository.getInstance().persist(cliente);
 		} catch (Exception e) {
 			Assert.fail();
 		}

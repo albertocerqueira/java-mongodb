@@ -4,9 +4,14 @@ import com.java.mongodb.AbstractMongo;
 import com.java.mongodb.ICallbackResult;
 import com.java.mongodb.JSON;
 
-public class ClienteRepository extends AbstractMongo implements IClienteRepository {
+public class ClienteRepository extends AbstractMongo {
 
 	public static final String BUCKET_NAME_CLIENTE = "cliente";
+	public static ClienteRepository instance = new ClienteRepository();
+
+	public static ClienteRepository getInstance() {
+		return instance;
+	}
 
 	public Long clienteNextVal() {
 		return nextVal("cliente");
@@ -27,9 +32,9 @@ public class ClienteRepository extends AbstractMongo implements IClienteReposito
 		update(key, cliente, BUCKET_NAME_CLIENTE);
 		System.out.println("Efetuado a altera\u00e7\u00e3o no Mongo do Produto com a key [" + key + "].");
 	}
-	
+
 	public void remove(String key) throws Exception {
-		
+		// TODO: implementar
 	}
 
 	public Cliente buscarPelaChave(String key) throws Exception {
@@ -49,7 +54,7 @@ public class ClienteRepository extends AbstractMongo implements IClienteReposito
 	}
 
 	public Cliente buscarPeloNome(String key) throws Exception {
+		// TODO: implementar
 		return null;
 	}
-	
 }
