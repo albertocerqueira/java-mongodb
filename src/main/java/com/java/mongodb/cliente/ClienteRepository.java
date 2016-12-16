@@ -1,10 +1,16 @@
 package com.java.mongodb.cliente;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.Document;
 
 import com.java.mongodb.AbstractMongo;
 import com.java.mongodb.ICallbackResult;
 import com.java.mongodb.JSON;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -61,6 +67,14 @@ public class ClienteRepository extends AbstractMongo {
 		return cliente;
 	}
 
+	/**
+	 * 
+	 * @Query db.cliente.find({"nome": < value >})
+	 * 
+	 * @param nome
+	 * @return
+	 * @throws Exception
+	 */
 	public Cliente buscarPeloNome(String nome) throws Exception {
 		MongoDatabase db = getDBClient().getDatabase(DATABASE_NAME);
 		MongoCollection<Document> collection = db.getCollection(BUCKET_NAME_CLIENTE);
@@ -70,5 +84,32 @@ public class ClienteRepository extends AbstractMongo {
 			return Cliente.create(JSON.createFrom(String.valueOf(obj.toJson())));
 		}
 		return null;
+	}
+	
+	public List<Cliente> buscarPorIdades(Integer ... idades) throws Exception {
+		MongoDatabase db = getDBClient().getDatabase(DATABASE_NAME);
+		MongoCollection<Document> collection = db.getCollection(BUCKET_NAME_CLIENTE);
+		
+		// db.cliente.find({"idade": { $in: [<value>, <value>] }}).pretty()
+		
+		List<Integer> list = new ArrayList<Integer>();
+		for (int i = 0, l = idades.length; i < l; i++) {
+			list.add(idades[i]);
+		}
+		
+		BasicDBList docIdades = new BasicDBList();
+		docIdades.addAll(list);
+		DBObject inClause = new BasicDBObject("$in", docIdades);
+		BasicDBObject query = new BasicDBObject("idade", inClause);
+		
+		Iterable<Document> clientesRaw = collection.find(Filters.and(query));
+		
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		for (Document clienteRow : clientesRaw) {
+			Cliente cliente = Cliente.create(JSON.createFrom(String.valueOf(clienteRow.toJson())));
+			clientes.add(cliente);
+		}
+		
+		return clientes;
 	}
 }
